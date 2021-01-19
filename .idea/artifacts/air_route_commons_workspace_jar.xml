@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="air-route-commons-workspace:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/air_route_commons_workspace_jar</output-path>
+    <root id="archive" name="air-route-commons-workspace.jar">
+      <element id="module-output" name="air-route-commons-workspace" />
+    </root>
+  </artifact>
+</component>
