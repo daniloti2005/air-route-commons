@@ -1,27 +1,28 @@
 package br.com.daniloti2005.air_route_commons.interpreter.dijkstra;
 
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class Graph {
 
     HashMap<String, Node> nodeMap = new HashMap<>();
 
-    Graph(List<Node> initNodes)
+    public Graph(List<Node> initNodes)
     {
         for(Node n: initNodes)
             nodeMap.put(n.getName(), n);
     }
 
-    public String dijkstra(String originName, String destinationName)
-    {
-        String path = "";
-        if(nodeMap.containsKey(originName) && nodeMap.containsKey(destinationName)) {
-            resetNodesAndSetNewOrigin(originName);
-            path = Dijkstra.getPathDijkstra(nodeMap.get(originName), nodeMap.get(destinationName));
+    public List<Node> dijkstra(Node origin, Node destination) throws Exception {
+        List<Node> path = null;
+        if(nodeMap.containsKey(origin.getName()) && nodeMap.containsKey(destination.getName())) {
+            resetNodesAndSetNewOrigin(origin.getName());
+            Dijkstra shortPath = new Dijkstra();
+            path = shortPath.getPathDijkstra(nodeMap.get(origin.getName()), nodeMap.get(destination.getName()));
         } else {
-            path = "Origin or Destination node specified does not exist in the graph.";
+            throw new Exception("Origin or Destination node specified does not exist in the graph.");
         }
+
+        Collections.reverse(path);
 
         return path;
     }
@@ -30,6 +31,6 @@ public class Graph {
     {
         for(Node n : nodeMap.values())
             n.reset();
-        nodeMap.get(newOriginName).setDistanceFromOrigin(0);
+            nodeMap.get(newOriginName).setDistanceFromOrigin(0);
     }
 }

@@ -1,18 +1,16 @@
 package br.com.daniloti2005.air_route_commons.interpreter.dijkstra;
 
-import java.util.ArrayList;
+import java.util.*;
 
-/**
- * Created by Nick on 11/29/2017.
- */
+
 public class Dijkstra {
-    private static StringBuilder path = new StringBuilder();
-    private static boolean isPathFound = false;
-    private static boolean pathDoesNotExist = false;
-    private static ArrayList<Node> nodesToVisit = new ArrayList<>();
-    public static String getPathDijkstra(Node origin, Node destination)
-    {
-        path.delete( 0, path.length() );
+    private List<Node> path = new ArrayList<>();
+    private boolean isPathFound = false;
+    private boolean pathDoesNotExist = false;
+    private ArrayList<Node> nodesToVisit = new ArrayList<>();
+
+    public List<Node> getPathDijkstra(Node origin, Node destination) throws Exception {
+
         nodesToVisit.clear();
         nodesToVisit.add(origin);
         isPathFound = false;
@@ -41,23 +39,23 @@ public class Dijkstra {
         }
 
         if(pathDoesNotExist)
-            path.append(String.format("NO PATH EXISTS BETWEEN NODES %s AND %s", origin.getName(), destination.getName()));
+            throw new Exception((String.format("NO PATH EXISTS BETWEEN NODES %s AND %s", origin.getName(), destination.getName())));
         else
             backtracePath(destination);
 
-        return path.toString();
+        return path;
     }
 
-    private static boolean shouldUpdateEdgeNode(Node currentNode, Edge currentEdge)
+    private boolean shouldUpdateEdgeNode(Node currentNode, Edge currentEdge)
     {
         return currentEdge.getLength() + currentNode.getDistanceFromOrigin() < currentEdge.getEndNode().getDistanceFromOrigin();
     }
 
-    private static void backtracePath(Node destination)
+    private void backtracePath(Node destination)
     {
         Node pathNode = destination;
         do{
-            path.insert(0, pathNode.getName());
+            path.add(pathNode);
             pathNode = pathNode.getPreviousNode();
         }while(pathNode != null);
     }

@@ -16,7 +16,7 @@ public final class RouteSingleton {
     private static RouteSingleton INSTANCE;
     private static String info = "This class is responsible to create a Route´s Pool";
     private static List<String> lstRoute;
-    private static Map<Node, List<Edge>> mapRoute;
+    private static Map<String, Node> mapRoute;
 
     /***
      * Constructor doing nothing :)
@@ -38,11 +38,11 @@ public final class RouteSingleton {
         return INSTANCE;
     }
 
-    public static void setMapRoute(Map<Node, List<Edge>> mapRouteParam) {
+    public static void setMapRoute(Map<String, Node> mapRouteParam) {
         mapRoute = mapRouteParam;
     }
 
-    public static Map<Node, List<Edge>> getMapRoute() {
+    public static Map<String, Node> getMapRoute() {
         return mapRoute;
     }
 
