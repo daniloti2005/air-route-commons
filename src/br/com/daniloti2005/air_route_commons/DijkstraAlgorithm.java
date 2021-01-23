@@ -36,19 +36,15 @@ public class DijkstraAlgorithm {
     }
 
     public static void initializeAttributes() {
-        Node startingNode = null;
-        Node endingNode = null;
-        List<Node> visitedNodes = new ArrayList<>();
-        List<Node> unvisitedNodes = new ArrayList<>();
-        List<Node> shortCosts = new ArrayList<>();
-        Route route = null;
+        visitedNodes = new ArrayList<>();
+        shortCosts = new ArrayList<>();
     }
 
     public static List<Node> perform() {
         initializeAttributes();
         shortCosts = new ArrayList<>();
 
-        // Let distance of start vertex from start vertex = 0
+        // Let distance of start vertex from start vertex = 0'
         getStartingNode().setDistanceFromOrigin(0);
         getStartingNode().setPreviousNode(null);
 
@@ -56,27 +52,33 @@ public class DijkstraAlgorithm {
         // And set null to previous node;
         for (Node item : getUnvisitedNodes()) {
             //Others than starting Vertex
-            if (!item.equalsName(getStartingNode().getName())){
+            if (!item.equalsName(getStartingNode().getName())) {
                 item.setDistanceFromOrigin(Integer.MAX_VALUE);
                 item.setPreviousNode(null);
             }
         }
 
+        Node currentVertex = null;
+
         // WHILE vertices remain unvisited
         while (isThereAnyUnvisited()) { //Visit all unvisited node
             //Visit unvisited vertex with smallest known distrance from start vertex (call this 'current vertex)
-            Node currentVertex = getNodeSmallestDistanceFromStartingVertex();
+            currentVertex = getUnvisitedLowerValueFromOrigin();
             System.out.println(currentVertex.getName());
-            currentVertex.setVisited(true);
-                //For each unvisited neighbour of the current vertex
-                for (Edge routesToNeighbour : currentVertex.getEdges()) {
 
+            //For each unvisited neighbour of the current vertex
+            List<Edge> toVisit = currentVertex.getEdges();
+            for (Edge routesToNeighbour : toVisit) {
+                if (getVisitedNodes().stream().anyMatch(o -> o.getName() == routesToNeighbour.getEndNode().getName())) {
+                    continue;
+                }
+                if (getUnvisitedNodes().contains(routesToNeighbour.getEndNode())){
                     // Calculate the distance to Starting Vertex
                     Node neighbourNode = route.getNodeFromMap(routesToNeighbour.getEndNode().getName());
                     neighbourNode.setDistanceFromPrevious(routesToNeighbour.getLength());
-
                     Integer distanceToStartingVertex = calculateDistancetoStartingVertex(currentVertex, routesToNeighbour.getLength());
                     System.out.println(distanceToStartingVertex);
+
                     // If calculated distance of this vertex is less than the known distance
                     if (distanceToStartingVertex < neighbourNode.getDistanceFromOrigin()) {
                         // Update shortest distance from start vertex
@@ -86,8 +88,15 @@ public class DijkstraAlgorithm {
                         // Update distance from previous node
                         neighbourNode.setDistanceFromPrevious(routesToNeighbour.getLength());
                     }
-                    currentVertex.setVisited(true);
+
+
+
                 }
+            }
+            currentVertex.setVisited(true);
+
+            changeUnvisitedToVisited(currentVertex);
+
         }
         return buildShortRoute(endingNode);
     }
@@ -99,14 +108,12 @@ public class DijkstraAlgorithm {
     }
 
     public static List<Node> buildShortRoute(Node destination){
-        boolean finish = false;
         List<Node> shortRouteList = new ArrayList<>();
         Node currentFlowNode = destination;
-        shortRouteList.add(destination);
         do{
-            currentFlowNode = destination.getPreviousNode();
             shortRouteList.add(currentFlowNode);
-        } while ( currentFlowNode.getDistanceFromOrigin() != 0 );
+            currentFlowNode = currentFlowNode.getPreviousNode();
+        } while ( currentFlowNode != null );
         Collections.reverse(shortRouteList);
         return shortRouteList;
     }
@@ -159,13 +166,11 @@ public class DijkstraAlgorithm {
         return SmallestNode;
     }
 
-    public static Node getNodeSmallestDistanceFromStartingVertex(){
+    public static Node getNodeSmallestDistanceFromCurrentVentex(Node current){
         Integer SmallestValue = Integer.MAX_VALUE;
         Node SmallestNode = null;
-        for (Node item : getNodesAdjacents(getStartingNode())){
-            item.setDistanceFromOrigin(item.getDistanceFromPrevious());
-            item.setPreviousNode(getStartingNode());
-            if (item.getDistanceFromOrigin() < SmallestValue) {
+        for (Node item : getNodesAdjacents(current)){
+            if (item.getDistanceFromPrevious() <= SmallestValue) {
                 SmallestValue = item.getDistanceFromOrigin();
                 SmallestNode = item;
             }
@@ -174,6 +179,7 @@ public class DijkstraAlgorithm {
     }
 
     public static void addVisitedNode(Node node){
+        if (getVisitedNodes() == null) { visitedNodes = new ArrayList<>();}
         getVisitedNodes().add(node);
     }
 
@@ -239,6 +245,22 @@ public class DijkstraAlgorithm {
         return unvisitedNodes;
     }
 
+    public static Node getUnvisitedLowerValueFromOrigin() {
+        Node temp = null;
+        Integer lowerValue = Integer.MAX_VALUE;
+
+        // percorre a Lista de Nos procurando o menor valor.
+        for (Node item: getUnvisitedNodes()) {
+            if (item.getDistanceFromOrigin() < lowerValue) {
+                lowerValue = item.getDistanceFromOrigin();
+                temp = item;
+            }
+        }
+        return temp;
+    }
+
+
+
     public static void setUnvisitedNode(Node initUnvisitedNode) {
         getUnvisitedNodes().add(initUnvisitedNode);
     }
@@ -260,8 +282,8 @@ public class DijkstraAlgorithm {
     }
 
     public static void changeUnvisitedToVisited(Node unvisited) {
-        addVisitedNode(unvisited);
-        removeUnvisitedNode(unvisited);
+        unvisitedNodes.remove(unvisited);
+        visitedNodes.add(unvisited);
     }
 
     public static void changeVisitedToUnvisited(Node visited){
@@ -275,5 +297,16 @@ public class DijkstraAlgorithm {
 
     public static void setRoute(Route initRoute) {
         route = initRoute;
+    }
+
+    private List<Node> backtracePath(Node destination)
+    {
+        List<Node> path = new ArrayList<>();
+        Node pathNode = destination;
+        do{
+            path.add(pathNode);
+            pathNode = pathNode.getPreviousNode();
+        }while(pathNode != null);
+        return path;
     }
 }

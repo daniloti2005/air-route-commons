@@ -2,8 +2,9 @@ package br.com.daniloti2005.air_route_commons.interpreter.dijkstra;
 
 public class Edge {
 
-    Node endNode = null;
-    int edgeLength = -1;
+    private Node endNode = null;
+    private int edgeLength = -1;
+
 
     public Edge(Node initEndNode, int initLength){
         this.endNode = initEndNode;
