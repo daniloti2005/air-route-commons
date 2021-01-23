@@ -73,8 +73,7 @@ public class Node {
     }
 
     public boolean isTherePreviousNode(){
-        return !this.getPreviousNode().equalsName(startingNode.getName())
-                && this.getPreviousNode() != null;
+        return this.getDistanceFromOrigin() != 0;
     }
 
     public int getDistanceFromPrevious() {

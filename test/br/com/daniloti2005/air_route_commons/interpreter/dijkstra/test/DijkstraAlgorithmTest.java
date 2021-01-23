@@ -22,15 +22,17 @@ class DijkstraAlgorithmTest {
         route.makeRoute("ORL","CDG",5);
         route.makeRoute("SCL","ORL",20);
 
-        DijkstraAlgorithm dijkstraAlgorithm = new DijkstraAlgorithm(route.getNodeFromMap("GRU"),
+        DijkstraAlgorithm.initialization(route.getNodeFromMap("GRU"),
                 route.getNodeFromMap("CDG"),
                 route);
 
-        List<Node> retorno = dijkstraAlgorithm.perform();
+        List<Node> retorno = DijkstraAlgorithm.perform();
+
 
         for (Node item : retorno){
             System.out.println(item.getName()+ " - "+item.getDistanceFromPrevious());
         }
         System.out.println("Total Cost"+retorno.get(retorno.size()).getDistanceFromOrigin());
     }
+
 }

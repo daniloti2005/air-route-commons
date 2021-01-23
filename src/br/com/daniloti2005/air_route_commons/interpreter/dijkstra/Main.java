@@ -1,5 +1,7 @@
 package br.com.daniloti2005.air_route_commons.interpreter.dijkstra;
 
+import br.com.daniloti2005.air_route_commons.DijkstraAlgorithm;
+
 import java.util.*;
 
 class Main {
@@ -84,27 +86,26 @@ class Main {
         route.addNode(SCL);
 
         //Graph graph = new Graph(Arrays.asList(nodes.clone()));
-        Graph graph = new Graph(route.getNodes());
+        //Graph graph = new Graph(route.getNodes());
 
         // The paths below differ because the graph is bidirectional and B->D=25 while D->B=2
         //Results
         System.out.println("results =>");
 
         // The paths below differ because the graph is bidirectional and B->D=25 while D->B=2
-        List<Node> retorno =
-                graph.dijkstra(route.getNodeFromMap("GRU"),
-                route.getNodeFromMap("CDG"));
+//        List<Node> retorno =
+//                graph.dijkstra(route.getNodeFromMap("GRU"),
+//                route.getNodeFromMap("CDG"));
 
-        try {
-            List<Node> solution = graph.dijkstra(GRU, CDG);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+                DijkstraAlgorithm.
+                        initialization(route.getNodeFromMap("GRU"),
+                                                 route.getNodeFromMap("CDG"), route);
+
+                List<Node> retorno = DijkstraAlgorithm.perform();
+
 
         for (Node item : retorno){
             System.out.println(item.getName()+" - "+item.getDistanceFromOrigin()) ;
         }
-
-
     }
 }
