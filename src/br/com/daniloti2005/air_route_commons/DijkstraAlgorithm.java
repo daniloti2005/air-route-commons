@@ -66,12 +66,17 @@ public class DijkstraAlgorithm {
         while (isThereAnyUnvisited()) { //Visit all unvisited node
             //Visit unvisited vertex with smallest known distrance from start vertex (call this 'current vertex)
             Node currentVertex = getNodeSmallestDistanceFromStartingVertex();
+            System.out.println(currentVertex.getName());
             currentVertex.setVisited(true);
                 //For each unvisited neighbour of the current vertex
                 for (Edge routesToNeighbour : currentVertex.getEdges()) {
+
                     // Calculate the distance to Starting Vertex
                     Node neighbourNode = route.getNodeFromMap(routesToNeighbour.getEndNode().getName());
-                    Integer distanceToStartingVertex = calculateDistancetoStartingVertex(neighbourNode, routesToNeighbour.getLength());
+                    neighbourNode.setDistanceFromPrevious(routesToNeighbour.getLength());
+
+                    Integer distanceToStartingVertex = calculateDistancetoStartingVertex(currentVertex, routesToNeighbour.getLength());
+                    System.out.println(distanceToStartingVertex);
                     // If calculated distance of this vertex is less than the known distance
                     if (distanceToStartingVertex < neighbourNode.getDistanceFromOrigin()) {
                         // Update shortest distance from start vertex
