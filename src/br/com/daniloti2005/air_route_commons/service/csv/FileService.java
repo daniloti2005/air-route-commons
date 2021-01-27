@@ -7,13 +7,12 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 
 public class FileService {
-    public static String pathArgs;
     private String path;
     private final String sep = File.separator;
 
     public FileService(){
-        if (!pathArgs.trim().isEmpty()){
-            setPath(pathArgs);
+        if (!path.trim().isEmpty()){
+            setPath(path);
         }
     }
 
@@ -31,7 +30,7 @@ public class FileService {
 
     public String read() throws Exception {
         String ret = "";
-        File file = new File(pathArgs);
+        File file = new File(path);
         FileReader fr = new FileReader(file);
         BufferedReader br = new BufferedReader(fr);
         String line;
@@ -61,7 +60,7 @@ public class FileService {
     }
 
     public void save() throws Exception {
-        File file = new File(pathArgs);
+        File file = new File(path);
         FileWriter fw = new FileWriter(file, StandardCharsets.UTF_8);
         BufferedWriter out = new BufferedWriter(fw);
         for (String route: RouteSingleton.getListRoutes()){
@@ -73,7 +72,7 @@ public class FileService {
     }
 
     public void save(String path) throws Exception {
-        File file = new File(pathArgs);
+        File file = new File(path);
         FileWriter fw = new FileWriter(file, StandardCharsets.UTF_8);
         BufferedWriter out = new BufferedWriter(fw);
         for (String route: RouteSingleton.getListRoutes()){
