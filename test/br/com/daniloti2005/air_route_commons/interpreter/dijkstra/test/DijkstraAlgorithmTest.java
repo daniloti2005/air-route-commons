@@ -1,13 +1,12 @@
 package br.com.daniloti2005.air_route_commons.interpreter.dijkstra.test;
 
-import br.com.daniloti2005.air_route_commons.DijkstraAlgorithm;
+import br.com.daniloti2005.air_route_commons.interpreter.dijkstra.DijkstraAlgorithm;
 import br.com.daniloti2005.air_route_commons.interpreter.dijkstra.Node;
 import br.com.daniloti2005.air_route_commons.interpreter.dijkstra.Route;
+import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class DijkstraAlgorithmTest {
 
@@ -32,7 +31,8 @@ class DijkstraAlgorithmTest {
         for (Node item : retorno){
             System.out.println(item.getName()+ " - "+item.getDistanceFromPrevious());
         }
-        System.out.println("Total Cost"+retorno.get(retorno.size()).getDistanceFromOrigin());
+        System.out.println("Total Cost:"+retorno.get(retorno.size()-1).getDistanceFromOrigin());
+        Assert.assertTrue(retorno.get(retorno.size()-1).getDistanceFromOrigin() == 40);
     }
 
 }

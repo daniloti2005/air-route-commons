@@ -1,4 +1,4 @@
-package br.com.daniloti2005.air_route_commons;
+package br.com.daniloti2005.air_route_commons.interpreter.dijkstra;
 
 import br.com.daniloti2005.air_route_commons.interpreter.dijkstra.Edge;
 import br.com.daniloti2005.air_route_commons.interpreter.dijkstra.Node;
@@ -64,7 +64,7 @@ public class DijkstraAlgorithm {
         while (isThereAnyUnvisited()) { //Visit all unvisited node
             //Visit unvisited vertex with smallest known distrance from start vertex (call this 'current vertex)
             currentVertex = getUnvisitedLowerValueFromOrigin();
-            System.out.println(currentVertex.getName());
+            //System.out.println(currentVertex.getName());
 
             //For each unvisited neighbour of the current vertex
             List<Edge> toVisit = currentVertex.getEdges();
@@ -77,7 +77,7 @@ public class DijkstraAlgorithm {
                     Node neighbourNode = route.getNodeFromMap(routesToNeighbour.getEndNode().getName());
                     neighbourNode.setDistanceFromPrevious(routesToNeighbour.getLength());
                     Integer distanceToStartingVertex = calculateDistancetoStartingVertex(currentVertex, routesToNeighbour.getLength());
-                    System.out.println(distanceToStartingVertex);
+                    //System.out.println(distanceToStartingVertex);
 
                     // If calculated distance of this vertex is less than the known distance
                     if (distanceToStartingVertex < neighbourNode.getDistanceFromOrigin()) {
