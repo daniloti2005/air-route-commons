@@ -49,9 +49,9 @@ public class FileService {
         BufferedReader br = new BufferedReader(fr);
         String line;
         while ((line=br.readLine())!=null){
-            String origin = line.split(sep)[0];
-            String destination = line.split(sep)[1];
-            String cost = line.split(sep)[2];
+            String origin = line.split(",")[0];
+            String destination = line.split(",")[1];
+            String cost = line.split(",")[2];
             ret.makeRoute(origin, destination, Integer.valueOf(cost));
         }
         br.close();
