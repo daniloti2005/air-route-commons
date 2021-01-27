@@ -1,5 +1,6 @@
 package br.com.daniloti2005.air_route_commons.service.csv;
 
+import br.com.daniloti2005.air_route_commons.interpreter.dijkstra.Route;
 import br.com.daniloti2005.air_route_commons.singleton.route.RouteSingleton;
 
 import java.io.*;
@@ -28,14 +29,35 @@ public class FileService {
         this.path = path;
     }
 
-    public void read() throws Exception {
+    public String read() throws Exception {
+        String ret = "";
         File file = new File(pathArgs);
         FileReader fr = new FileReader(file);
         BufferedReader br = new BufferedReader(fr);
         String line;
         while ((line=br.readLine())!=null){
-            RouteSingleton.setRoute(line);
+            ret += line;
         }
+        br.close();
+        fr.close();
+        return ret;
+    }
+
+    public Route loadfromfile() throws Exception {
+        Route ret = new Route();
+        File file = new File(path);
+        FileReader fr = new FileReader(file);
+        BufferedReader br = new BufferedReader(fr);
+        String line;
+        while ((line=br.readLine())!=null){
+            String origin = line.split(sep)[0];
+            String destination = line.split(sep)[1];
+            String cost = line.split(sep)[2];
+            ret.makeRoute(origin, destination, Integer.valueOf(cost));
+        }
+        br.close();
+        fr.close();
+        return ret;
     }
 
     public void save() throws Exception {
